@@ -1,0 +1,485 @@
+# Time to Go
+
+Dimitris Dranidis
+
+CITY College, University of York Europe Campus
+
+1st SKG Gophers Meetup
+
+Friday, May 7, 2021
+
+dranidis@york.citycollege.eu
+
+
+
+
+
+## Slides and code at
+
+.link https://github.com/dranidis/time-to-go
+
+
+
+
+
+## Hello world
+
+.play -edit hello/hello.go
+
+
+
+
+
+## Hello Web
+
+Starts a web server at <http://localhost:8080> using the default HTTP router.
+
+.play helloweb/helloweb.go
+
+
+
+
+
+## Go history
+
+- created at Google, 2009
+- by Robert Griesemer, Rob Pike, and Ken Thompson
+- open source
+- First release in 2012, Go 1
+- May 2021, Go 1.16
+
+
+
+
+
+## Go features
+
+- statically typed (with implicit type inference)
+- compiled (fast compilation)
+- gargage collection
+- object-oriented (??)
+- functional
+- concurrent
+
+
+
+
+
+## Code organization and tools
+
+
+
+
+
+
+## Tools
+
+- `go mod init` - Initialize a module
+- `go build` - Build files
+- `go install` -- Install binaries in pkg and bin
+- `go test ./...` Run all tests and report results
+- `go fmt` Format code
+- `go doc`-Get help on a command
+- `go ...`
+
+
+
+
+
+## Some language features
+
+
+
+
+
+## Features
+
+Statically typed with implicit type inference at compile time
+
+    i := 3 // same with var i int = 3
+
+Multiple assignments
+
+    a, b = b, a
+
+Multiple return values
+
+    func foo() (int, int) {
+      ...
+      return a, b
+    }
+    x, y := foo()
+
+Package visibility
+
+    func Foo() {...} // visible outside the package
+    func foo() {...} // private to the package
+
+
+
+
+
+
+
+
+
+
+## Variadic functions
+
+Functions that accept a variable number of arguments
+
+.play -edit variadic/variadic.go
+
+
+
+
+
+## Deferred execution
+
+You can execute a function call after the termination of the surrounding function.
+Arguments are evaluated immediately.
+
+.play -edit defer/defer.go
+
+Good for cleanup, e.g. closing files.
+
+
+
+
+
+## Pointers
+
+If you are familiar with C/C++ no problem!
+
+
+
+
+## Pointers
+
+.play -edit pointers/pointers.go /Decl/,/END OMIT/
+
+
+
+## Arrays and Slices
+
+## Arrays
+Arrays have fixed length. Go's arrays are values. Not pointers like in C. When passed as a parameter to
+a function a copy of the array is created.
+
+.play -edit arrays/arrays.go
+
+
+
+## Slices 
+
+Slices have no fixed size. They are dynamically resized.
+
+A slice is a struct with an array, a length and a capacity.
+
+
+```
+type slice struct {
+    elements unsafe.Pointer
+    len      int
+    cap      int
+}
+```
+
+A slice can be created with:
+
+```
+slice := make([]int, 5)
+```
+
+or with a slice literal:
+
+```
+slice := []{1,2,3}
+
+## Slices
+
+.play -edit slices/slices.go /workOnSlice/,/END/
+
+
+## Functional aspects
+
+
+
+
+
+## Functions as values
+
+.play -edit eval/eval.go /M OMIT/,/END OMIT/
+
+
+
+
+
+## Currying
+
+A function returning a function (closure)
+
+.play -edit currying/currying.go
+
+
+
+
+
+## Go is Object-Oriented (?)
+
+
+
+
+
+## Struct types instead of classes
+
+.play -edit square/square.go /Square OMIT/,/END OMIT/
+
+
+
+
+
+
+
+
+## Interfaces
+
+Interfaces are collections of method signatures.
+
+.code interface/interface.go /interface/,/}/
+
+Interfaces are **contracts**. Any user-defined type providing the methods of an interface **implicitly** implements the interface.
+
+.code interface/interface.go /Square/,/INT/
+
+`*Square` implements `Shape`
+
+
+
+
+
+## Interfaces (example)
+
+#.code player/player.go /INTER OMIT/,/END OMIT/
+.play interface/interface.go /Shape/,/END/
+
+
+
+
+
+## Composition (Embedding) instead of Inheritance (It's not!)
+
+.play -edit oop/shape.go /type Rectangle/,/END OMIT/
+
+
+
+
+
+
+
+## Error Handling
+
+
+
+
+
+## Errors as function results - Instead of exceptions
+
+Errors (implicitly) implement the error interface, by defining the Error() method.
+
+.code  -edit error/error.go /ERROR OMIT/,/END OMIT/
+
+Functions may return errors
+
+.code -edit error/error.go /DIV OMIT/,/END OMIT/
+
+
+
+
+
+
+## Checking for errors
+
+.play -edit error/error.go /CHECK OMIT/,/END OMIT/
+
+
+
+
+
+
+
+
+## Testing
+
+
+
+
+
+## Testing
+
+Test files end in `_test.go`.
+They can be in the same package with the source file or in a different package.  
+No assertions.  Full manual control. Test functions have the form
+
+```
+ func TestFoo(t *testing.T) {
+     ...
+ }
+```
+
+`go test ./...` executes all tests in all folders and subfolders.
+
+// .code -edit factorial/factorial_test.go /TEST OMIT/,/END OMIT/
+.code -edit factorial/factorial_test.go 
+
+
+
+
+
+
+
+## Building a REST API
+
+
+
+
+
+## REST API Routes
+
+Using a 3rd party HTTP router and dispatcher <https://github.com/gorilla/mux>
+
+#.play  -edit restapi/restapi.go
+
+.play  -edit restapi/restapi.go /ROUTE OMIT/,/END OMIT/
+.link http://localhost:8080/api/products
+.link http://localhost:8080/api/product/cof
+
+
+
+
+
+## REST API - JSON Encoding
+
+.code  -edit restapi/restapi.go /PROD OMIT/,/END OMIT/
+
+
+
+
+
+## REST API - Getting a product
+
+.code  -edit restapi/restapi.go /GET OMIT/,/END OMIT/
+.code  -edit restapi/restapi.go /RESPOND OMIT/,/END OMIT/
+
+
+
+
+
+
+## Concurrency
+
+
+
+
+
+
+## Goroutines
+
+.play  -edit goroutines/goroutines.go /CODE OMIT/,/END OMIT/
+
+
+
+
+
+
+
+## Communication
+
+Go follows the CSP (Communicating Sequential Processes) semantics.
+
+Communication is synchronous (blocking)
+
+Write a value to a channel
+
+.code clock/clock.go /WRITE OMIT/,/END OMIT/
+
+Read a value from a channel (and assign to a variable)
+
+.code  -edit clock/clock.go /READ OMIT/,/END OMIT/
+
+Spawning a goroutine
+
+.code  -edit clock/clock.go /GO OMIT/,/END OMIT/
+
+ 
+
+
+
+
+## Example of synchronous channel communication
+
+.play  -edit clock/clock.go /CODE OMIT/,/ENDCODE OMIT/
+
+
+
+
+
+
+## Tasks
+
+Mock Tasks
+
+.code  -edit tasks/tasks_s.go /Task OMIT/,/END OMIT/
+
+
+Work on task
+
+.code  -edit tasks/tasks_s.go /Work OMIT/,/}/
+
+
+
+
+
+
+## Worker
+
+Channels
+
+.code  -edit tasks/tasks_s.go /CHAN OMIT/,/END OMIT/
+
+Worker
+
+.code  -edit tasks/tasks_s.go /WORKER OMIT/,/END OMIT/
+
+
+
+
+
+
+
+## Worker pool (cont)
+
+.play  -edit tasks/tasks_s.go /MAIN OMIT/,/END OMIT/
+
+
+
+
+
+## Consume from many producers
+
+Producer
+
+.code  -edit producer/producer.go /PROD OMIT/,/END OMIT/
+
+
+
+
+
+## Consumer (Select statement)
+
+.code  -edit producer/producer.go /CONS OMIT/,/END OMIT/
+
+.play  -edit producer/producer.go /func main/,/}/
+
+
+
