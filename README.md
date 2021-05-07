@@ -1,4 +1,4 @@
-# The way to Go
+# Time to Go
 
 by Dimitris Dranidis
 
