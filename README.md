@@ -21,3 +21,7 @@ go get golang.org/x/tools/cmd/present
 
 To view talks, run `present` in the current directory and then
 visit [http://127.0.0.1:3999](http://127.0.0.1:3999) in your browser.
+
+```
+go run golang.org/x/tools/cmd/present
+```
